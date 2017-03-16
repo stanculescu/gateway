@@ -170,13 +170,12 @@ public final class VersionUtils {
         int i = pathEntries.length;
         while (!foundJar && (--i >= 0)) {
             String pathEntry = pathEntries[i];
-            System.out.println("PATH: " + pathEntry);
             if (pathEntry.contains("gateway.server")) {
+                JarFile jar = null;
                 try {
-                    JarFile jar = new JarFile(pathEntry);
+                    jar = new JarFile(pathEntry);
                     Manifest mf = jar.getManifest();
                     Attributes attrs = mf.getMainAttributes();
-                    jar.close();
                     if (attrs == null) {
                         continue;
                     }
@@ -202,6 +201,16 @@ public final class VersionUtils {
                 } catch (IOException e) {
                     if (logger.isWarnEnabled()) {
                         logger.warn("An exception occurred while getting product information", e);
+                    }
+                } finally {
+                    if (jar != null) {
+                        try {
+                            jar.close();
+                        } catch (IOException e) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("An exception occurred while closing jar file", e);
+                            }
+                        }
                     }
                 }
             }
