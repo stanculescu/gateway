@@ -19,24 +19,30 @@ import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductEdit
 import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductTitle;
 import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductVersion;
 
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class VersionUtilsTest {
 
+    @After
+    public void cleanupMockProduct() {
+        VersionUtils.productEdition =null;
+        VersionUtils.productTitle =null;
+        VersionUtils.productVersion =null;
+        VersionUtils.productDependencies =null;
+    }
+
     @Test public void shouldGetProductInfo() {
-        System.out.println("CLASS PATH: "+System.getProperty("java.class.path"));
-        //System.setProperty("java.class.path", System.getProperty("user.dir") + "/src/test/resources/gateway.server-5.0.0.8.jar");
+        System.setProperty("java.class.path", "src/test/resources/gateway.server-5.0.0.8.jar");
         Assert.assertEquals("5.0.0.8 Beta", getGatewayProductVersion());
         Assert.assertEquals("Kaazing WebSocket Gateway", getGatewayProductTitle());
         Assert.assertEquals("Gateway", getGatewayProductEdition());
     }
 
     @Test public void shouldGetProductInfoWhenSystemHasManyJars() {
-        System.setProperty("java.class.path",
-                System.getProperty("user.dir") + "/src/test/resources/gateway.server-5.0.0.9.jar; " +
-                        System.getProperty("user.dir") + "/src/test/resources/gateway.server-5.0.0.8.jar");
+        System.setProperty("java.class.path", "src/test/resources/gateway.server-5.0.0.8.jar " +
+            System.getProperty("path.separator") + "src/test/resources/gateway.server-5.0.0.9.jar");
         Assert.assertEquals("5.0.0.9 Beta", getGatewayProductVersion());
         Assert.assertEquals("Kaazing WebSocket Gateway", getGatewayProductTitle());
         Assert.assertEquals("Gateway", getGatewayProductEdition());
