@@ -26,8 +26,8 @@ import org.junit.Test;
 public class VersionUtilsTest {
 
     @Test public void shouldGetProductInfo() {
-        System.out.println("CLASS PATH: "+System.getProperty("java.class.path"));
-        //System.setProperty("java.class.path", System.getProperty("user.dir") + "/src/test/resources/gateway.server-5.0.0.8.jar");
+        //System.out.println("CLASS PATH: "+System.getProperty("java.class.path"));
+        System.setProperty("java.class.path", System.getProperty("user.dir") + "/src/test/resources/gateway.server-5.0.0.8.jar");
         Assert.assertEquals("5.0.0.8 Beta", getGatewayProductVersion());
         Assert.assertEquals("Kaazing WebSocket Gateway", getGatewayProductTitle());
         Assert.assertEquals("Gateway", getGatewayProductEdition());

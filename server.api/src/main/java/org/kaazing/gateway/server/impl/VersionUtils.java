@@ -187,7 +187,7 @@ public final class VersionUtils {
                     String dependencies = attrs.getValue("Kaazing-Dependencies");
                     if (product != null && title != null && version != null) {
                         foundJar = true;
-
+                        System.out.println("JAR=TRUE");
                         // Store the list of products found, but remove any products
                         // marked as dependencies (i.e. products on which the current
                         // product depends.  We want to find the product that nothing
@@ -220,6 +220,8 @@ public final class VersionUtils {
             productVersion = null;
             productEdition = null;
             productDependencies = null;
+            System.out.println("PRODUCT SIZE "+products.size());
+            System.out.println("JAR INFO " + productTitle+ productVersion +" " + productEdition +" ");
         } else {
             // The remaining values in 'products' are the real top-level product names.
             // NOTE: Per discussion with Brian in 3.3, this should be only a single value,
@@ -229,6 +231,7 @@ public final class VersionUtils {
             productVersion = attrs.getValue("Implementation-Version");
             productEdition = attrs.getValue("Kaazing-Product");
             productDependencies = attrs.getValue("Kaazing-Dependencies");
+            System.out.println("JAR INFO " + productTitle+ productVersion +" " + productEdition +" ");
         }
     }
 
