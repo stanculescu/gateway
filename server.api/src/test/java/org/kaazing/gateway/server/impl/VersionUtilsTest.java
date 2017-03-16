@@ -18,6 +18,8 @@ package org.kaazing.gateway.server.impl;
 import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductEdition;
 import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductTitle;
 import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductVersion;
+import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductVersionMinor;
+import static org.kaazing.gateway.server.impl.VersionUtils.getGatewayProductVersionPatch;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -38,11 +40,25 @@ public class VersionUtilsTest {
         Assert.assertEquals("5.0.0.8 Beta", getGatewayProductVersion());
         Assert.assertEquals("Kaazing WebSocket Gateway", getGatewayProductTitle());
         Assert.assertEquals("Gateway", getGatewayProductEdition());
+        Assert.assertEquals("5.0", getGatewayProductVersionMinor());
+        Assert.assertEquals("5.0.0", getGatewayProductVersionPatch());
+    }
+
+    @Test public void shouldGetDefaultProductInfo() {
+        System.setProperty("java.class.path", "src/test/resources/gateway.server-noMF.jar");
+        Assert.assertEquals(null, getGatewayProductVersion());
+        Assert.assertEquals("Kaazing WebSocket Gateway (Development)", getGatewayProductTitle());
+        Assert.assertEquals(null, getGatewayProductEdition());
+        Assert.assertEquals(null, getGatewayProductVersionMinor());
+        Assert.assertEquals(null, getGatewayProductVersionPatch());
     }
 
     @Test public void shouldGetProductInfoWhenSystemHasManyJars() {
         System.setProperty("java.class.path", "src/test/resources/gateway.server-5.0.0.8.jar " +
-            System.getProperty("path.separator") + "src/test/resources/gateway.server-5.0.0.9.jar");
+            System.getProperty("path.separator") + "src/test/resources/gateway.server-5.0.0.9.jar" +
+            System.getProperty("path.separator") + "src/test/resources/gateway.server-noMF.jar" +
+            System.getProperty("path.separator") + "src/test/resources/gateway.server-noAttrs.jar" +
+            System.getProperty("path.separator") + "src/test/resources/gateway.server-missing.jar");
         Assert.assertEquals("5.0.0.9 Beta", getGatewayProductVersion());
         Assert.assertEquals("Kaazing WebSocket Gateway", getGatewayProductTitle());
         Assert.assertEquals("Gateway", getGatewayProductEdition());
